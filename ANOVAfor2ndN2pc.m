@@ -13,7 +13,7 @@ function ANOVAfor2ndN2pc(nfilename,pair)
         check_sub_nums = 0;
         load_unfiltered = 0;
         load_ft = 0;
-        plotERPs(nfilename,check_sub_nums,load_unfiltered,load_ft,sublist,pair,condition)
+        plotERPs(nfilename,load_unfiltered,load_ft,sublist,pair,condition)
     end
     sprintf('=Condition #%d',condition)
     Contrasub = sprintf('NCI/Contrasub_%s',nfilename);
