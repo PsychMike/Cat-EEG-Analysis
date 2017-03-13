@@ -11,19 +11,19 @@ run_batcherp = 0;
 %1 = O1O2, 2 = P3P4, 3 = P7P8, 4 = CP3CP4, 5 = TP7TP8, 6 = C3C4, 7 = T7T8, 8 = FC3FC4, 9 = FT7FT8, 10 = F3F4, 11 = F7F8, 12 = FP1FP2
 pair = 3;
 %Plot ERP's?
-plot_erp = 0;
+plot_erp = 1;
 %Only one condition
 condition = 1;
 %Generate GND?; %Run permutation analysis?; %Run ANOVA?
-gnd = 1;perm = 0;anova = 0;
+gnd = 0;perm = 0;anova = 0;
 %Which pair of electrodes?
-pair = 2;
+pair = 3;
 %True targs = 1, False targs = 0
-for true_target = 1;
+for true_target = 0;
     %Filter for accuracy?
-    for FilteredForAccuracy = true_target;
+    for FilteredForAccuracy =true_target;
         %Filter by which category?...
-        for which_cats = 3; %1 = best, 2 = worst, 3 = all, 4 = specify
+        for which_cats = 0; %1 = best, 2 = worst, 3 = all, 4 = specify
             if which_cats == 1
                 cat_filt = [2,3,4,5,6,7,10,15]; %best
             elseif which_cats == 2
@@ -33,44 +33,54 @@ for true_target = 1;
             else
                 cat_filt = [1,2,4:16]; %any cats you want to include
             end
-            %Builds filename
-            if num_of_subs == 1
-                nfilename = sprintf('n%dacc%dtt%dcf%dsub%d',num_of_subs,FilteredForAccuracy,true_target,which_cats,sublist);
-            else
-                nfilename = sprintf('n%dacc%dtt%dcf%dsub%d',num_of_subs,FilteredForAccuracy,true_target,which_cats,0);
-            end
-            real_file = sprintf('masterdata/%s',nfilename);
-            %         if exist(real_file)>0
-            %             proceed=input('Batcherp was already ran with these parameters. Press "1" if you intend to overwrite the existing file.')
-            %             if proceed~=1
-            %                 error('Stopped batcherp to avoid overwrite.')
-            %             end
-            %         end
-            if run_batcherp
-                batcherp_2(sublist,FilteredForAccuracy,true_target,cat_filt,nfilename)
-            else
-                message = 'Not running batcherp'
-            end
-            if gnd
-                %Creates CSV file with set names
-                binned_names = {};
-                for i = 1:length(sublist)
-                    sub = sublist(i);
-                    cond = 1;
-                    binned_names{i,cond} = sprintf('binned_subs/binnedsub%d%s.set',sub,nfilename);
+            for cat_filt = [1:16]
+                which_cats = which_cats + 10;
+                %Builds filename
+                if num_of_subs == 1
+                    nfilename = sprintf('n%dacc%dtt%dcf%dsub%d',num_of_subs,FilteredForAccuracy,true_target,which_cats,sublist);
+                else
+                    nfilename = sprintf('n%dacc%dtt%dcf%dsub%d',num_of_subs,FilteredForAccuracy,true_target,which_cats,0);
                 end
-                GND = sets2GND(binned_names,'exclude_chans',{'M1','HEO','VEO'},'out_fname',nfilename);
-            end
-            if plot_erp
-                plotERPs(nfilename,load_unfiltered,load_ft,sublist,pair,condition)
-            end
-            if perm
-                PermTestContraVIpsi
-            end
-            if anova
-                ANOVAfor2ndN2pc(nfilename,pair)
+                real_file = sprintf('masterdata/%s',nfilename);
+                %         if exist(real_file)>0
+                %             proceed=input('Batcherp was already ran with these parameters. Press "1" if you intend to overwrite the existing file.')
+                %             if proceed~=1
+                %                 error('Stopped batcherp to avoid overwrite.')
+                %             end
+                %         end
+                if run_batcherp
+                    batcherp_2(sublist,FilteredForAccuracy,true_target,cat_filt,nfilename)
+                else
+                    message = 'Not running batcherp'
+                end
+                if gnd
+                    sub_count = 0;
+                    %Creates CSV file with set names
+                    binned_names = {};
+                    for i = 1:length(sublist)
+                        sub = sublist(i);
+                        cond = 1;
+                        binned_sub = sprintf('binned_subs/binnedsub%d%s.set',sub,nfilename);
+                        if exist(binned_sub)
+                                                    sub_count = sub_count+1;
+                        binned_names{sub_count,cond} = sprintf('binned_subs/binnedsub%d%s.set',sub,nfilename);
+                        end
+                    end
+                    try
+                    GND = sets2GND(binned_names,'exclude_chans',{'M1','HEO','VEO'},'out_fname',nfilename);
+                    end
+                end
+                if plot_erp
+                    plotERPs(nfilename,load_unfiltered,load_ft,sublist,pair,condition)
+                end
+                if perm
+                    PermTestContraVIpsi
+                end
+                if anova
+                    ANOVAfor2ndN2pc(nfilename,pair)
+                end
             end
         end
     end
-%     input('enter');
+%         input('enter');
 end

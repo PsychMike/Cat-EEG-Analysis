@@ -33,7 +33,7 @@ switch(pair)
         pairname = 'FP1/FP2';
 end
 
-trialcriterion = 15;
+trialcriterion = 1;
 
 repeat  = 1;
 while repeat == 1
