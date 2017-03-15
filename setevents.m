@@ -51,7 +51,7 @@ while (thisevent < length(types))
         
         trial = actualtrialnum;
         if trial > 3
-            if FilteredForAccuracy
+            if FilteredForAccuracy==1
                 try
                     if strcmp(Userdata.Blocks.Trials(trial).Trial_Export.review_item,'y')
                         skip = 0;

@@ -6,7 +6,7 @@ sublist = [20:32,35,37:39,41:48];
 num_of_subs = length(sublist);
 %Organize EEG data. Set run_batcherp to 1 to run batcherp, 0
 %if already ran.
-run_batcherp = 0;
+run_batcherp = 1;
 %Enter the electrode pair you want to look at:
 %1 = O1O2, 2 = P3P4, 3 = P7P8, 4 = CP3CP4, 5 = TP7TP8, 6 = C3C4, 7 = T7T8, 8 = FC3FC4, 9 = FT7FT8, 10 = F3F4, 11 = F7F8, 12 = FP1FP2
 pair = 3;
@@ -18,10 +18,14 @@ condition = 1;
 gnd = 0;perm = 0;anova = 0;
 %Which pair of electrodes?
 pair = 3;
+%Do you want to look strictly at inaccurate trials?
+inaccurate_trials = 0;
+%Accumulate tn's for every cat
+all_tns = zeros(750,1);
 %True targs = 1, False targs = 0
-for true_target = 0;
+for true_target = 1;
     %Filter for accuracy?
-    for FilteredForAccuracy =true_target;
+    for FilteredForAccuracy =true_target + inaccurate_trials;
         %Filter by which category?...
         for which_cats = 0; %1 = best, 2 = worst, 3 = all, 4 = specify
             if which_cats == 1
@@ -71,7 +75,7 @@ for true_target = 0;
                     end
                 end
                 if plot_erp
-                    plotERPs(nfilename,load_unfiltered,load_ft,sublist,pair,condition)
+                    [all_tns]=plotERPs(nfilename,load_unfiltered,load_ft,sublist,pair,condition,cat_filt,all_tns);
                 end
                 if perm
                     PermTestContraVIpsi

@@ -81,7 +81,7 @@ while repeat == 1
                 for(trial = 1:size(masterdata{sub,con,locleft,1},2))
                     eegdatal = masterdata{sub,con,locleft,1}(:,trial);
                     eegdatar = masterdata{sub,con,locright,1}(:,trial);
-                    if(max(abs(eegdatal(200:500,1))) >  reject_thresh)  %check voltage from -200 to + 1000 msec
+                    if(max(abs(eegdatal(200:500,1))) >  reject_thresh) && (max(abs(eegdatar(200:500,1))) >  reject_thresh) %check voltage from -200 to + 1000 msec
                         goodtrials(trial) = 0;
                     else
                         goodtrials(trial) = 1;

@@ -33,7 +33,7 @@ for(sub = sublist)
     
     Heyechan = 30; % HEO
     Veyechan = 31; %VEO
-    Hthresh = 20; %horizontal threshold
+    Hthresh = 30; %horizontal threshold
     Vthresh = 100; %vertical threshold
     
     %set events cycles through every trial and using the rated data will rename the triggers depending on whether they were reported accurately
