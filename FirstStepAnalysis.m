@@ -6,7 +6,7 @@ sublist = [20:32,35,37:39,41:48];
 num_of_subs = length(sublist);
 %Organize EEG data. Set run_batcherp to 1 to run batcherp, 0
 %if already ran.
-run_batcherp = 1;
+run_batcherp = 0;
 %Enter the electrode pair you want to look at:
 %1 = O1O2, 2 = P3P4, 3 = P7P8, 4 = CP3CP4, 5 = TP7TP8, 6 = C3C4, 7 = T7T8, 8 = FC3FC4, 9 = FT7FT8, 10 = F3F4, 11 = F7F8, 12 = FP1FP2
 pair = 3;

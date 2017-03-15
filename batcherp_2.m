@@ -47,6 +47,8 @@ for(sub = sublist)
         EEG = pop_interp(EEG,badchans{sub},'spherical');
     end
     
+    EEG=pop_eegfilt(EEG,.3,10,[],[0]);
+    
     condition = 1;
     for leftright = 1:2
         if leftright == 1
